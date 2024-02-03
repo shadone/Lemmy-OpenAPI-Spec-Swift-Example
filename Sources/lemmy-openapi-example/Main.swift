@@ -16,7 +16,7 @@ struct Main {
             configuration: .init(dateTranscoder: LemmyDateTranscoder()),
             transport: URLSessionTransport()
         )
-        let response = try await client.getPosts(query: .init(GetPosts: .init(type_: .All)))
+        let response = try await client.getPosts(query: .init(type_: .All))
         let posts = try response.ok.body.json.posts
         let postsString = posts
             .map {
