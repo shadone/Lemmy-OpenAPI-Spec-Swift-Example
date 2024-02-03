@@ -1,0 +1,3 @@
+[submodule "Lemmy-OpenAPI-Spec"]
+	path = Lemmy-OpenAPI-Spec
+	url = git@github.com:shadone/Lemmy-OpenAPI-Spec.git
