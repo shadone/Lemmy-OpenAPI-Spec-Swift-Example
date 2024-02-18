@@ -30,6 +30,33 @@ struct Main {
         print(postsString)
     }
 
+    static func uploadImage(client: Client) async throws {
+        let jwt = try await {
+            print("### login")
+            let response = try await client.login(body: .json(.init(
+                username_or_email: "your-username-goes-here",
+                password: "your-password-goes-here"
+            )))
+
+            return try response.ok.body.json.jwt!
+        }()
+
+        await authorizationMiddleware.setToken(jwt)
+
+        print("### load image")
+        let data = try! Data(contentsOf: URL(filePath: "/path/to/Lenna.png"))
+
+        print("### upload image")
+        let response = try await client.uploadImage(body: .multipartForm([
+            .images_lbrack__rbrack_(.init(
+                payload: .init(body: .init(data)),
+                /// The filename is meaningless here, but mandatory field to include, without Lemmy rejects the request.
+                filename: "hello.png"
+            ))
+        ]))
+        print(response)
+    }
+
     static func createPost(client: Client) async throws {
         let jwt = try await {
             print("### login")
